@@ -1,21 +1,11 @@
 package br.com.dv
 
 import com.azure.data.tables.TableClient
-import com.azure.data.tables.TableClientBuilder
 import com.azure.data.tables.models.TableEntity
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
 @Service
-class AzureTableStorageService(
-    @Value("\${azure.storage.accountName}") private val accountName: String,
-    @Value("\${azure.storage.accountKey}") private val accountKey: String,
-    @Value("\${azure.storage.tableName}") private val tableName: String
-) {
-    private val tableClient: TableClient = TableClientBuilder()
-        .connectionString("DefaultEndpointsProtocol=https;AccountName=$accountName;AccountKey=$accountKey;EndpointSuffix=core.windows.net")
-        .tableName(tableName)
-        .buildClient()
+class AzureTableStorageService(private val tableClient: TableClient) {
 
     fun saveEntity(data: YouthExchange): TableEntity {
         val partitionKey = data.partitionKey
@@ -43,4 +33,5 @@ class AzureTableStorageService(
 
         return entity
     }
+
 }
